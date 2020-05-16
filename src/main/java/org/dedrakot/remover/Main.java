@@ -1,5 +1,7 @@
 package org.dedrakot.remover;
 
+import org.dedrakot.nn.NeuralNetwork;
+import org.dedrakot.nn.Trainer;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -30,7 +32,10 @@ public class Main {
         String resultsFileName = "tmp/result.txt";
         String defaultSample = args.length > 0 ? args[0] : "tmp/hm.jpg";
 
-        final HistImageMatcher matcher = createMatcher(defaultSample);
+        NeuralNetwork nn = Trainer.load("tmp/trained");
+        NeuralNetwork.initImage64(nn);
+        final ImageMatcher matcher = new NNMatcher(nn);
+//        final ImageMatcher matcher = createMatcher(defaultSample);
 
         final ConcurrentHashMap<String, Boolean> matchedMap = new ConcurrentHashMap<>();
         final ImageLookup imageLookup = new ImageLookup(Arrays.asList("model_image", "cutout_image"));
@@ -47,7 +52,7 @@ public class Main {
                                 System.out.println(iav);
                                 return false;
                             }
-                            Boolean result = matcher.match(mat);
+                            boolean result = matcher.match(mat);
                             mat.release();
                             return result;
                         });

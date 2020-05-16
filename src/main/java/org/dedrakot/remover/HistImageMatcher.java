@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Collections;
 import java.util.List;
 
-public class HistImageMatcher {
+public class HistImageMatcher implements ImageMatcher {
     private static final int hBins = 50, sBins = 60;
     private final int[] histSize = {hBins, sBins};
     // hue varies from 0 to 179, saturation from 0 to 255
@@ -23,6 +23,7 @@ public class HistImageMatcher {
         histBase = calcHist(base);
     }
 
+    @Override
     public boolean match(Mat other) {
         // 3 - CV_COMP_BHATTACHARYYA
         Mat hist = calcHist(other);
