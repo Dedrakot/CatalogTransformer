@@ -16,18 +16,27 @@ public class NNMatcher implements ImageMatcher {
     @Override
     public boolean match(Mat other) {
         MatcherState state = getState();
-        setInput(state, other);
-        nn.feedForward(state.np);
-        double[] result = state.np.result();
+        fillState(state, other);
+        state.np.setInput(state.buffer);
+        return match(state.np);
+    }
+
+    private boolean match(NetworkPayload np) {
+        nn.feedForward(np);
+        double[] result = np.result();
         return result[0] > result[1];
     }
 
-    private void setInput(MatcherState state, Mat other) {
+    public boolean match(NetworkPayload np, byte[] buffer) {
+        np.setInput(buffer);
+        return match(np);
+    }
+
+    private void fillState(MatcherState state, Mat other) {
         Mat center = ImageUtils.center(other);
         Mat sq = ImageUtils.sqare64(center);
         center.release();
-        ImageUtils.grayData(sq, state.buffer);
-        state.np.setInput(state.buffer);
+        ImageUtils.bgrData(sq, state.buffer);
     }
 
     private MatcherState getState() {
@@ -40,7 +49,7 @@ public class NNMatcher implements ImageMatcher {
     }
 
     private static class MatcherState {
-        final byte[] buffer = new byte[64 * 64];
+        final byte[] buffer = new byte[ImageUtils.BGR_DATA_SIZE64];
         final NetworkPayload np;
 
         private MatcherState(NetworkPayload np) {

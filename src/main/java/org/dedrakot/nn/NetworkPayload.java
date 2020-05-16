@@ -29,8 +29,8 @@ public class NetworkPayload {
     }
 
     public void setInput(byte[] buffer) {
-        for (int i = 0; i < buffer.length; i++) {
-            input()[i] =  buffer[i] & 0xff;
+        for (int i = 0, j = 0; i < buffer.length; i += 3, j++) {
+            input()[j] = (buffer[i] & 0xff) | ((buffer[i + 1] & 0xff) << 8) | ((buffer[i + 2] & 0xff) << 16);
         }
     }
 }

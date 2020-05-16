@@ -6,7 +6,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtils {
-
+    public static final int BGR_DATA_SIZE64 = 64 * 64 *3;
     private static final Size S64 = new Size(64, 64);
 
     public static Mat gray(Mat src) {
@@ -20,6 +20,11 @@ public class ImageUtils {
         Mat t = ImageUtils.gray(src);
         t.get(0,0, buffer);
         t.release();
+    }
+
+    public static void bgrData(Mat src, byte[] buffer) {
+        src.get(0,0, buffer);
+        src.release();
     }
 
     public static Mat center(Mat src) {

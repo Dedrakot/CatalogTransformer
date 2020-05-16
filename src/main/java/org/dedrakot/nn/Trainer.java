@@ -63,4 +63,8 @@ public class Trainer {
     public void setInput(byte[] buffer) {
         np.setInput(buffer);
     }
+
+    public NetworkPayload getNp() {
+        return np;
+    }
 }
