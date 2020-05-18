@@ -30,12 +30,9 @@ public class Main {
         String imagesDir = "tmp/images/catalog";
         String productCatalogXml = "tmp/products.xml";
         String resultsFileName = "tmp/result.txt";
-        String defaultSample = args.length > 0 ? args[0] : "tmp/hm.jpg";
 
-        NeuralNetwork nn = Trainer.load("tmp/trained");
-        NeuralNetwork.initImage64(nn);
-        final ImageMatcher matcher = new NNMatcher(nn);
-//        final ImageMatcher matcher = createMatcher(defaultSample);
+        final ImageMatcher matcher = createNeuralMatcher("tmp/trained");
+//        final ImageMatcher matcher = createHistogramMatcher("tmp/hm.jpg");
 
         final ConcurrentHashMap<String, Boolean> matchedMap = new ConcurrentHashMap<>();
         final ImageLookup imageLookup = new ImageLookup(Arrays.asList("model_image", "cutout_image"));
@@ -78,7 +75,13 @@ public class Main {
         }
     }
 
-    private static HistImageMatcher createMatcher(String fileName) {
+    private static ImageMatcher createNeuralMatcher(String fileName) throws IOException {
+        NeuralNetwork nn = Trainer.load(fileName);
+        NeuralNetwork.initImage64(nn);
+        return new NNMatcher(nn);
+    }
+
+    private static HistImageMatcher createHistogramMatcher(String fileName) {
         Mat srcBase = Imgcodecs.imread(fileName);
         HistImageMatcher ret = new HistImageMatcher(srcBase);
         srcBase.release();
