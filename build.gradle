@@ -27,12 +27,15 @@ tasks.withType(Test) {
 
 dependencies {
     // if System.loadLibrary(Core.NATIVE_LIBRARY_NAME) will fail change java.library.path to locate native library
-    // if you build opencv from the source code, probably it will be /usr/local/share/java/opencv4
+    // if you build opencv from the source code, probably it will be -Djava.library.path=/usr/local/share/java/opencv4
     implementation fileTree(dir: "${opencv4}", include: '*.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 
+    // to make xslt calls to java
+    // https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE
+    implementation group: 'net.sf.saxon', name: 'Saxon-HE', version: '10.1'
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
     testImplementation 'org.junit.jupiter:junit-jupiter-params:${junit5Version}'
