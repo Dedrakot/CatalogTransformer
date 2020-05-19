@@ -19,13 +19,13 @@ LoadProductCatalogImages::loadImages
 Путь для сохранения по умолчанию - "tmp/hm.jpg".
 
 4. Сделайте предварительную выборку.
-В Main::main раскомментируйте строчки создания матчера по гистограмме
-```
-final ImageMatcher matcher = createHistogramMatcher("tmp/hm.jpg");
-``` 
 Запуск приведёт к созданию "tmp/result.txt".
 Он должен быть достаточно неплох, но всё-таки может содержать некорректно выбранные изображения.
 Для разъяснения работы можно посмотреть пример TestImageCompare::sampleCode
+Для запуска в `Main::main` раскомментируйте строчки создания матчера по гистограмме.
+```
+final ImageMatcher matcher = createHistogramMatcher("tmp/hm.jpg");
+``` 
 
 5. Скопировать полученные файлы можно будет при помощи CopyResultList::copyImagesFromResults.
 Файлы, соответствующие строкам из result.txt будут скопированы в "tmp/images/flat".
@@ -52,8 +52,11 @@ final ImageMatcher matcher = createHistogramMatcher("tmp/hm.jpg");
 Можно проверить это запустив NeuralNetworkTest::match
 
 10. Запустить Main с матчером на основе нейросети.
-```final ImageMatcher matcher = createNeuralMatcher("tmp/trained");```
 Будет сформирован новый "tmp/result.txt"
+Для запуска в `Main::main` раскомментируйте:
+```
+final ImageMatcher matcher = createNeuralMatcher("tmp/trained");
+```
 
 11. Почистить каталог
 TransformCatalog::main удалит аттрибуты содержащие изображения из results.txt согласно main/resources/removeImages.xsl
